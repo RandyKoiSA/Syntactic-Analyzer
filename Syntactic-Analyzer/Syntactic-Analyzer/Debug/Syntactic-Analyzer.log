@@ -1,4 +1,6 @@
-﻿  SyntaxAnalyzer.cpp
-d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(23): warning C4018: '<': signed/unsigned mismatch
-d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(29): warning C4018: '<': signed/unsigned mismatch
+﻿  Main.cpp
+  SyntaxAnalyzer.cpp
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(25): warning C4018: '<': signed/unsigned mismatch
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(31): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
   Syntactic-Analyzer.vcxproj -> D:\Users\97randy\Desktop\Syntactic-Analyzer\Syntactic-Analyzer\Debug\Syntactic-Analyzer.exe
