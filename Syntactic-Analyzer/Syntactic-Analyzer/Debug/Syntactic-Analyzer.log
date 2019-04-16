@@ -1,6 +1,7 @@
 ﻿  Main.cpp
   SyntaxAnalyzer.cpp
-d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(25): warning C4018: '<': signed/unsigned mismatch
-d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(31): warning C4018: '<': signed/unsigned mismatch
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(42): warning C4018: '<': signed/unsigned mismatch
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(48): warning C4018: '<': signed/unsigned mismatch
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(71): error C2065: 'conversion': undeclared identifier
+d:\users\97randy\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(72): error C2065: 'conversion': undeclared identifier
   Generating Code...
-  Syntactic-Analyzer.vcxproj -> D:\Users\97randy\Desktop\Syntactic-Analyzer\Syntactic-Analyzer\Debug\Syntactic-Analyzer.exe

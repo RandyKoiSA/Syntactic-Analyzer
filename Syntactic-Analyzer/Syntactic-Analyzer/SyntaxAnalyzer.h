@@ -35,7 +35,8 @@ private:
 	vector<string> lexemes;
 	vector<string> tokens;
 	stack <string> syntaxStack; 
-	map<string, int> conversion;
+	map<string, int> conversionTerminals;
+	map<string, int> conversionNonTerminals;
 	int rules[5][8] = {
 		 1, -1, -1, -1, -1,  1, 0, 0,
 		-1,  2,  3, -1, -1, -1, 0, 0,

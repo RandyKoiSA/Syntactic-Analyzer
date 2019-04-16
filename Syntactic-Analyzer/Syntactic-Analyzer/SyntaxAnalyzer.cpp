@@ -15,19 +15,19 @@ SyntaxAnalyzer::SyntaxAnalyzer() {
 }
 
 void SyntaxAnalyzer::makeConversions() {
-	conversion["E"] = 0;
-	conversion["J"] = 1;
-	conversion["T"] = 2;
-	conversion["U"] = 3;
-	conversion["F"] = 4;
-	conversion["i"] = 0;
-	conversion["+"] = 1;
-	conversion["-"] = 2;
-	conversion["/"] = 3;
-	conversion["*"] = 4;
-	conversion["("] = 5;
-	conversion[")"] = 6;
-	conversion["$"] = 7;
+	conversionNonTerminals["E"] = 0;
+	conversionNonTerminals["J"] = 1;
+	conversionNonTerminals["T"] = 2;
+	conversionNonTerminals["U"] = 3;
+	conversionNonTerminals["F"] = 4;
+	conversionTerminals["i"] = 0;
+	conversionTerminals["+"] = 1;
+	conversionTerminals["-"] = 2;
+	conversionTerminals["/"] = 3;
+	conversionTerminals["*"] = 4;
+	conversionTerminals["("] = 5;
+	conversionTerminals[")"] = 6;
+	conversionTerminals["$"] = 7;
 }
 
 void SyntaxAnalyzer::loadLexemes(vector<string> lexemes) {
@@ -68,31 +68,45 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	syntaxStack.push("E");
 
 	do {
-		int currentRow = conversion[syntaxStack.top()];
-		int currentColumn = conversion[lexemes[index]];
+		// check if the top is nonterminal or not first
+
+		int currentRow = conversionNonTerminals[syntaxStack.top()];
+		int currentColumn = conversionTerminals[lexemes[index]];
+
 		syntaxStack.pop();
 		int state = rules[currentRow][currentColumn];
 		
+
 		switch (state){
 		case -1:
+			ruleError();
 			break;
 		case 0:
+			ruleZero();
 			break;
 		case 1:
+			ruleOne();
 			break;
 		case 2:
+			ruleTwo();
 			break;
 		case 3:
+			ruleThree();
 			break;
 		case 4:
+			ruleFour();
 			break;
 		case 5:
+			ruleFive();
 			break;
 		case 6:
+			ruleSix();
 			break;
 		case 7:
+			ruleSeven();
 			break;
 		case 8:
+			ruleEight();
 			break;
 		default:
 			cout << "ERROR, UNREACHABLE AREA\n";
@@ -103,40 +117,55 @@ void SyntaxAnalyzer::analyzeSyntax() {
 
 void SyntaxAnalyzer::ruleOne()
 {
+	cout << "ruleONE\n";
 	// pushes J then T
+	syntaxStack.push("J");
+	syntaxStack.push("T");
 }
 
 void SyntaxAnalyzer::ruleTwo()
 {
+	cout << "ruleTwo\n";
 	// push J, T, +
 	// check if the top of stack terminal and compares with lexeme index
+	syntaxStack.push("J");
+	syntaxStack.push("T");
+	syntaxStack.push("+");
+	if (syntaxStack.top() == lexemes[index]) {
+		lexer();
+	}
 }
 
 void SyntaxAnalyzer::ruleThree()
 {
+	cout << "ruleThree\n";
 	// push J, T, -
 	// check if the top of stack terminal and compares with lexeme index
 }
 
 void SyntaxAnalyzer::ruleFour()
 {
+	cout << "ruleFour\n";
 	// push U, F
 }
 
 void SyntaxAnalyzer::ruleFive()
 {
+	cout << "ruleFive\n";
 	// push U, F, *
 	// check if the top of stack terminal and compares with lexeme index
 }
 
 void SyntaxAnalyzer::ruleSix()
 {
+	cout << "ruleSix\n";
 	// push U, F, /
 	// check if the top of stack terminal and compares with lexeme index
 }
 
 void SyntaxAnalyzer::ruleSeven()
 {
+	cout << "ruleSeven\n";
 	// push ), E, (
 	// check if the top of stack terminal and compares with lexeme index
 
@@ -144,16 +173,19 @@ void SyntaxAnalyzer::ruleSeven()
 
 void SyntaxAnalyzer::ruleEight()
 {
+	cout << "ruleEight\n";
 	// push i
 	// check if the top of stack terminal and compares with lexeme index
 }
 
 void SyntaxAnalyzer::ruleZero()
 {
+	cout << "ruleZero\n";
 	// push nothing; continue
 }
 
 void SyntaxAnalyzer::ruleError()
 {
+	cout << "ruleError\n";
 	// ERROR HAS OCCURED
 }
