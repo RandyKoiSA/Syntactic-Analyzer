@@ -11,6 +11,20 @@ public:
 	SyntaxAnalyzer();
 	// main method of running syntax analyzer
 	void analyzeSyntax();
+
+	// load lexemes / tokens for the lexeranalyzer
+	void loadLexemes(vector<string>);
+	void loadTokens(vector<string>);
+;
+	// testable methods
+	void printLexemes();
+	void printTokens();
+
+private:
+	void makeConversions();
+	bool isTerminal(string);
+	bool isNonterminal(string);
+	void handleTerminal();
 	void ruleOne();   // TJ
 	void ruleTwo();   // +TJ
 	void ruleThree(); // -TJ
@@ -22,14 +36,8 @@ public:
 	void ruleZero();  // EPSILON
 	void ruleError(); // ERROR
 
-	// load lexemes / tokens for the lexeranalyzer
-	void loadLexemes(vector<string>);
-	void loadTokens(vector<string>);
 	// get next lexeme / token
 	void lexer();
-	// testable methods
-	void printLexemes();
-	void printTokens();
 
 private:
 	vector<string> lexemes;
@@ -37,6 +45,10 @@ private:
 	stack <string> syntaxStack; 
 	map<string, int> conversionTerminals;
 	map<string, int> conversionNonTerminals;
+
+	string terminals[8] = { "i", "+", "-", "/", "*", "(", ")", "$" };
+	string nonterminals[5]{ "E", "J", "T", "U", "F" };
+
 	int rules[5][8] = {
 		 1, -1, -1, -1, -1,  1, 0, 0,
 		-1,  2,  3, -1, -1, -1, 0, 0,
@@ -45,6 +57,4 @@ private:
 		 8,  0,  0,  0,  0,  7, 0, 0
 	};
 	int index;	// index will keep track of where you are in the lexeme/token
-
-	void makeConversions();
 };

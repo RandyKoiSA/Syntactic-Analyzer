@@ -68,51 +68,76 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	syntaxStack.push("E");
 
 	do {
-		// check if the top is nonterminal or not first
-
-		int currentRow = conversionNonTerminals[syntaxStack.top()];
-		int currentColumn = conversionTerminals[lexemes[index]];
-
-		syntaxStack.pop();
-		int state = rules[currentRow][currentColumn];
-		
-
-		switch (state){
-		case -1:
-			ruleError();
-			break;
-		case 0:
-			ruleZero();
-			break;
-		case 1:
-			ruleOne();
-			break;
-		case 2:
-			ruleTwo();
-			break;
-		case 3:
-			ruleThree();
-			break;
-		case 4:
-			ruleFour();
-			break;
-		case 5:
-			ruleFive();
-			break;
-		case 6:
-			ruleSix();
-			break;
-		case 7:
-			ruleSeven();
-			break;
-		case 8:
-			ruleEight();
-			break;
-		default:
-			cout << "ERROR, UNREACHABLE AREA\n";
+		// check if the top of the stack is a terminal, if so check if lexeme matches
+		if (isTerminal(syntaxStack.top())) {
+			// check if it is an identifier
+			handleTerminal();
 		}
+		else if (isNonterminal(syntaxStack.top())) {
+			int currentRow = conversionNonTerminals[syntaxStack.top()];
+			int currentColumn = conversionTerminals[lexemes[index]];
 
+			syntaxStack.pop();
+			int state = rules[currentRow][currentColumn];
+
+
+			switch (state) {
+			case -1:
+				ruleError();
+				break;
+			case 0:
+				ruleZero();
+				break;
+			case 1:
+				ruleOne();
+				break;
+			case 2:
+				ruleTwo();
+				break;
+			case 3:
+				ruleThree();
+				break;
+			case 4:
+				ruleFour();
+				break;
+			case 5:
+				ruleFive();
+				break;
+			case 6:
+				ruleSix();
+				break;
+			case 7:
+				ruleSeven();
+				break;
+			case 8:
+				ruleEight();
+				break;
+			default:
+				cout << "ERROR, UNREACHABLE AREA\n";
+			}
+		}
+		else {
+			cout << "ERROR HAS OCCURED (80)\n";
+		}
 	} while (syntaxStack.top() == "$" || lexemes[index] == "$");
+}
+
+bool SyntaxAnalyzer::isTerminal(string value) {
+	for (int i = 0; i < terminals->size(); i++) {
+		if (terminals[i] == value) return true;
+	}
+	return false;
+}
+
+bool SyntaxAnalyzer::isNonterminal(string value) {
+	for (int i = 0; i < nonterminals->size(); i++) {
+		if (nonterminals[i] == value) return true;
+	}
+	return false;
+}
+
+void SyntaxAnalyzer::handleTerminal() {
+
 }
 
 void SyntaxAnalyzer::ruleOne()

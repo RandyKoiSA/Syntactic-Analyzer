@@ -1,0 +1,23 @@
+def analyzeSyntax:
+
+    do:
+
+    value = top();
+    pop();
+    if value is terminal:
+        if terminal matches current lexeme:
+            lexer()
+        else
+            error
+	    break
+    else if value is non-terminal:
+        rule = table[value][lexeme]
+        switch rule:
+            process rule
+    else
+        error
+	break
+
+    while (stack != "$" or lexeme[index] != "$")
+    
+    check if stack is "$" and lexeme "$"
