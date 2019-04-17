@@ -15,10 +15,12 @@ public:
 	// load lexemes / tokens for the lexeranalyzer
 	void loadLexemes(vector<string>);
 	void loadTokens(vector<string>);
-;
+
 	// testable methods
 	void printLexemes();
 	void printTokens();
+	void printStack();
+
 
 private:
 	void makeConversions();
@@ -46,8 +48,8 @@ private:
 	map<string, int> conversionTerminals;
 	map<string, int> conversionNonTerminals;
 
-	string terminals[8] = { "i", "+", "-", "/", "*", "(", ")", "$" };
-	string nonterminals[5]{ "E", "J", "T", "U", "F" };
+	vector<string> terminals= { "i", "+", "-", "/", "*", "(", ")", "$" };
+	vector<string> nonterminals = { "E", "J", "T", "U", "F" };
 
 	int rules[5][8] = {
 		 1, -1, -1, -1, -1,  1, 0, 0,

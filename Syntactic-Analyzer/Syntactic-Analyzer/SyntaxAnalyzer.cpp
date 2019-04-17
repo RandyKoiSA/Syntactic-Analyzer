@@ -50,6 +50,14 @@ void SyntaxAnalyzer::printTokens() {
 	}
 }
 
+void SyntaxAnalyzer::printStack() {
+	stack<string> displayStack = syntaxStack;
+	while (displayStack.size() < 0) {
+		cout << "stack: " << displayStack.top();
+		displayStack.pop();
+	}
+}
+
 void SyntaxAnalyzer::lexer() {
 	index++;
 }
@@ -68,18 +76,30 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	syntaxStack.push("E");
 
 	do {
+		cout << "top stack: " << syntaxStack.top() << endl;
 		// check if the top of the stack is a terminal, if so check if lexeme matches
 		if (isTerminal(syntaxStack.top())) {
 			// check if it is an identifier
 			handleTerminal();
 		}
 		else if (isNonterminal(syntaxStack.top())) {
+			cout << "nonterminal: " << syntaxStack.top() << " row: " << conversionNonTerminals[syntaxStack.top()] << endl;
 			int currentRow = conversionNonTerminals[syntaxStack.top()];
-			int currentColumn = conversionTerminals[lexemes[index]];
+			int currentColumn;
+
+			// check the types of tokens before processing into the column
+			if (tokens[index] == "identifier") {
+				currentColumn = conversionTerminals["i"];
+				cout << "terminal: " << lexemes[index] << " \tcolumn: " << currentColumn << endl;
+			}
+			else {
+				currentColumn = conversionTerminals[lexemes[index]];
+				cout << "terminal: " << lexemes[index] << " \tcolumn: " << currentColumn << endl;
+			}
 
 			syntaxStack.pop();
 			int state = rules[currentRow][currentColumn];
-
+			cout << "state: " << state << endl;
 
 			switch (state) {
 			case -1:
@@ -119,25 +139,52 @@ void SyntaxAnalyzer::analyzeSyntax() {
 		else {
 			cout << "ERROR HAS OCCURED (80)\n";
 		}
-	} while (syntaxStack.top() == "$" || lexemes[index] == "$");
+	} while (syntaxStack.top() != "$" || lexemes[index] != "$");
+	cout << "stack: " << syntaxStack.top() << endl;
+	cout << "last lexeme: " << lexemes[index] << endl;
+	cout << "SYNTAX IS CORRECT!\n";
 }
 
 bool SyntaxAnalyzer::isTerminal(string value) {
-	for (int i = 0; i < terminals->size(); i++) {
+	for (int i = 0; i < terminals.size(); i++) {
 		if (terminals[i] == value) return true;
 	}
 	return false;
 }
 
 bool SyntaxAnalyzer::isNonterminal(string value) {
-	for (int i = 0; i < nonterminals->size(); i++) {
-		if (nonterminals[i] == value) return true;
+	for (int i = 0; i < nonterminals.size(); i++) {
+		// cout << value << " equals to " << nonterminals[i] << "?";
+		if (nonterminals[i] == value) {
+			// cout << " true \n";
+			return true;
+		}
+		else {
+			// cout << " false \n";
+		}
 	}
 	return false;
 }
 
 void SyntaxAnalyzer::handleTerminal() {
-
+	if (syntaxStack.top() == "i") {
+		if (tokens[index] == "identifier") {
+			lexer();
+			syntaxStack.pop();
+		}
+		else {
+			cout << "ERORR (146)\n";
+		}
+	}
+	else {
+		if (syntaxStack.top() == lexemes[index]) {
+			lexer();
+			syntaxStack.pop();
+		}
+		else {
+			cout << "ERROR (155)\n";
+		}	
+	}
 }
 
 void SyntaxAnalyzer::ruleOne()
@@ -156,9 +203,6 @@ void SyntaxAnalyzer::ruleTwo()
 	syntaxStack.push("J");
 	syntaxStack.push("T");
 	syntaxStack.push("+");
-	if (syntaxStack.top() == lexemes[index]) {
-		lexer();
-	}
 }
 
 void SyntaxAnalyzer::ruleThree()
@@ -166,12 +210,17 @@ void SyntaxAnalyzer::ruleThree()
 	cout << "ruleThree\n";
 	// push J, T, -
 	// check if the top of stack terminal and compares with lexeme index
+	syntaxStack.push("J");
+	syntaxStack.push("T");
+	syntaxStack.push("-");
 }
 
 void SyntaxAnalyzer::ruleFour()
 {
 	cout << "ruleFour\n";
 	// push U, F
+	syntaxStack.push("U");
+	syntaxStack.push("F");
 }
 
 void SyntaxAnalyzer::ruleFive()
@@ -179,6 +228,9 @@ void SyntaxAnalyzer::ruleFive()
 	cout << "ruleFive\n";
 	// push U, F, *
 	// check if the top of stack terminal and compares with lexeme index
+	syntaxStack.push("U");
+	syntaxStack.push("F");
+	syntaxStack.push("*");
 }
 
 void SyntaxAnalyzer::ruleSix()
@@ -186,6 +238,9 @@ void SyntaxAnalyzer::ruleSix()
 	cout << "ruleSix\n";
 	// push U, F, /
 	// check if the top of stack terminal and compares with lexeme index
+	syntaxStack.push("U");
+	syntaxStack.push("F");
+	syntaxStack.push("/");
 }
 
 void SyntaxAnalyzer::ruleSeven()
@@ -193,7 +248,9 @@ void SyntaxAnalyzer::ruleSeven()
 	cout << "ruleSeven\n";
 	// push ), E, (
 	// check if the top of stack terminal and compares with lexeme index
-
+	syntaxStack.push(")");
+	syntaxStack.push("E");
+	syntaxStack.push("(");
 }
 
 void SyntaxAnalyzer::ruleEight()
@@ -201,6 +258,7 @@ void SyntaxAnalyzer::ruleEight()
 	cout << "ruleEight\n";
 	// push i
 	// check if the top of stack terminal and compares with lexeme index
+	syntaxStack.push("i");
 }
 
 void SyntaxAnalyzer::ruleZero()
