@@ -1,3 +1,11 @@
+/*
+	CPSC 323 Compilers and Languages
+	
+	@Project 2
+	@Author Randy Le, Alex Ma, Sami Halwani
+	@Version 1.2 04/22/2019s
+*/
+
 #pragma once
 #include <stack>
 #include <vector>
@@ -20,23 +28,21 @@ public:
 	void printLexemes();
 	void printTokens();
 	void printStack();
-
-
 private:
 	void makeConversions();
 	bool isTerminal(string);
 	bool isNonterminal(string);
 	void handleTerminal();
-	void ruleOne();   // TJ
-	void ruleTwo();   // +TJ
-	void ruleThree(); // -TJ
-	void ruleFour();  // FU
-	void ruleFive();  // *FU
-	void ruleSix();   // /FU
-	void ruleSeven(); // (E)
-	void ruleEight(); // i
-	void ruleZero();  // EPSILON
-	void ruleError(); // ERROR
+	void ruleOneTriggered();   // TJ
+	void ruleTwoTriggered();   // +TJ
+	void ruleThreeTriggered(); // -TJ
+	void ruleFourTriggered();  // FU
+	void ruleFiveTriggered();  // *FU
+	void ruleSixTriggered();   // /FU
+	void ruleSevenTriggered(); // (E)
+	void ruleEightTriggered(); // i
+	void ruleZeroTriggered();  // EPSILON
+	void ruleErrorTriggered(); // ERROR
 
 	// get next lexeme / token
 	void lexer();
@@ -58,5 +64,5 @@ private:
 		-1,  0,  0,  6,  5, -1, 0, 0,
 		 8,  0,  0,  0,  0,  7, 0, 0
 	};
-	int index;	// index will keep track of where you are in the lexeme/token
+	int index;	// index will keep track of where you are in the lexemes/tokens
 };

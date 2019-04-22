@@ -468,4 +468,3 @@ vector<string> LexerAnalyzer::getLexemes() {
 vector<string> LexerAnalyzer::getTokens() {
 	return tokensType;
 }
-

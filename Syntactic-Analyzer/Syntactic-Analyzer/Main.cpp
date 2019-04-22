@@ -1,3 +1,10 @@
+/*
+	CPSC 323 Compilers and Languages
+
+	@Project 2
+	@Author Randy Le, Alex Ma, Sami Halwani
+	@Version 1.2 04/22/2019
+*/
 #include <stack>
 #include <string>
 #include <iostream>
@@ -22,13 +29,7 @@ int main(int argc, char* arg[]) {
 			SyntaxAnalyzer sa;
 			sa.loadLexemes(la.getLexemes());
 			sa.loadTokens(la.getTokens());
-
-
-			//sa.printLexemes();
-			//sa.printTokens();
-
 			sa.analyzeSyntax();
-
 		}
 	}
 	return 0;

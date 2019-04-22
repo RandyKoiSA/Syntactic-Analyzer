@@ -1,3 +1,10 @@
+/*
+	CPSC 323 Compilers and Languages
+
+	@Author Randy Le, Alex Ma, Sami Halwani
+	@Version 1.2 04/22/2019
+*/
+
 #include <stack>
 #include <string>
 #include <vector>
@@ -6,6 +13,10 @@
 
 using namespace std;
 
+/*
+	Syntax Analyzer Constructor
+	initializes emmpty variables and set the T and NT conversions
+*/
 SyntaxAnalyzer::SyntaxAnalyzer() {
 	index = 0;
 	syntaxStack = stack<string>();
@@ -14,42 +25,74 @@ SyntaxAnalyzer::SyntaxAnalyzer() {
 	makeConversions();
 }
 
+/*
+	Make Conversion Method
+	Converts terminals and non-terminals to there corresponding
+	row or column in order use the 2D array rules
+*/
 void SyntaxAnalyzer::makeConversions() {
-	conversionNonTerminals["E"] = 0;
-	conversionNonTerminals["J"] = 1;
-	conversionNonTerminals["T"] = 2;
-	conversionNonTerminals["U"] = 3;
-	conversionNonTerminals["F"] = 4;
-	conversionTerminals["i"] = 0;
-	conversionTerminals["+"] = 1;
-	conversionTerminals["-"] = 2;
-	conversionTerminals["/"] = 3;
-	conversionTerminals["*"] = 4;
-	conversionTerminals["("] = 5;
-	conversionTerminals[")"] = 6;
-	conversionTerminals["$"] = 7;
+	conversionNonTerminals.insert(pair<string, int>("E", 0));
+	conversionNonTerminals.insert(pair<string, int>("J", 1));
+	conversionNonTerminals.insert(pair<string, int>("T", 2));
+	conversionNonTerminals.insert(pair<string, int>("U", 3));
+	conversionNonTerminals.insert(pair<string, int>("F", 4));
+	conversionTerminals.insert(pair<string, int>("i", 0));
+	conversionTerminals.insert(pair<string, int>("+", 1));
+	conversionTerminals.insert(pair<string, int>("-", 2));
+	conversionTerminals.insert(pair<string, int>("/", 3));
+	conversionTerminals.insert(pair<string, int>("*", 4));
+	conversionTerminals.insert(pair<string, int>("(", 5));
+	conversionTerminals.insert(pair<string, int>(")", 6));
+	conversionTerminals.insert(pair<string, int>("$", 7));
 }
 
+/*
+	Load Lexemes Method
+	Load the lexemes that was read from the Lexical Analyzer
+	to Syntax Analyzer
+*/
 void SyntaxAnalyzer::loadLexemes(vector<string> lexemes) {
 	this->lexemes = lexemes;
 }
 
+/*
+	Load Tokens Method
+	Loads the tokens that was read from the Lexical Anaylzer
+	to the Syntax Analyzer.
+*/
 void SyntaxAnalyzer::loadTokens(vector<string> tokens) {
 	this->tokens = tokens;
 }
 
+/*
+	Print Lexemes Method
+	Prints out the lexemes that was loaded onto the
+	Syntax Analyzer. This method is mostly used to test if the
+	Lexemes were loaded correctly.
+*/
 void SyntaxAnalyzer::printLexemes() {
 	for (int i = 0; i < lexemes.size(); i++) {
 		cout << lexemes[i] << endl;
 	}
 }
 
+/*
+	Print Tokens Method
+	Prints out the tokens that was loaded onto the
+	Syntax Analyzer. Method is mostly used to test if the Tokens
+	were loaded correctly onto the Syntax Analyzer.
+*/
 void SyntaxAnalyzer::printTokens() {
 	for (int i = 0; i < tokens.size(); i++) {
 		cout << tokens[i] << endl;
 	}
 }
 
+/*
+	Print Stack Method
+	Prints out the what is in the current stack.
+	Used to keep track of whats being pushed and popped.
+*/
 void SyntaxAnalyzer::printStack() {
 	stack<string> displayStack = syntaxStack;
 	while (displayStack.size() < 0) {
@@ -58,10 +101,20 @@ void SyntaxAnalyzer::printStack() {
 	}
 }
 
+/*
+	Lexer Method
+	increases the index to read the next lexemes / tokens
+*/
 void SyntaxAnalyzer::lexer() {
 	index++;
 }
 
+/*
+	Analyze Syntax Method
+	Main Function of Syntax Analyze
+	Checks if the given tokens / lexemes are grammarly correctly
+	with the given production rules.
+*/
 void SyntaxAnalyzer::analyzeSyntax() {
 	if (lexemes.size() < 0 || tokens.size() < 0) {
 		cout << "ERROR: NO FILE WAS FOUND TO ANALYZE SYNTAX\n";
@@ -103,34 +156,34 @@ void SyntaxAnalyzer::analyzeSyntax() {
 
 			switch (state) {
 			case -1:
-				ruleError();
+				ruleErrorTriggered();
 				break;
 			case 0:
-				ruleZero();
+				ruleZeroTriggered();
 				break;
 			case 1:
-				ruleOne();
+				ruleOneTriggered();
 				break;
 			case 2:
-				ruleTwo();
+				ruleTwoTriggered();
 				break;
 			case 3:
-				ruleThree();
+				ruleThreeTriggered();
 				break;
 			case 4:
-				ruleFour();
+				ruleFourTriggered();
 				break;
 			case 5:
-				ruleFive();
+				ruleFiveTriggered();
 				break;
 			case 6:
-				ruleSix();
+				ruleSixTriggered();
 				break;
 			case 7:
-				ruleSeven();
+				ruleSevenTriggered();
 				break;
 			case 8:
-				ruleEight();
+				ruleEightTriggered();
 				break;
 			default:
 				cout << "ERROR, UNREACHABLE AREA\n";
@@ -145,6 +198,10 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	cout << "SYNTAX IS CORRECT!\n";
 }
 
+/*
+	Is Terminal Method
+	returns true if the given string is a terminal
+*/
 bool SyntaxAnalyzer::isTerminal(string value) {
 	for (int i = 0; i < terminals.size(); i++) {
 		if (terminals[i] == value) return true;
@@ -152,6 +209,10 @@ bool SyntaxAnalyzer::isTerminal(string value) {
 	return false;
 }
 
+/*
+	Is Non-Terminal Method
+	returns true if the given string is a non-terminal
+*/
 bool SyntaxAnalyzer::isNonterminal(string value) {
 	for (int i = 0; i < nonterminals.size(); i++) {
 		// cout << value << " equals to " << nonterminals[i] << "?";
@@ -159,13 +220,16 @@ bool SyntaxAnalyzer::isNonterminal(string value) {
 			// cout << " true \n";
 			return true;
 		}
-		else {
-			// cout << " false \n";
-		}
 	}
 	return false;
 }
 
+/*
+	handle Terminal method
+	this handles if the given top of the stack matches with the
+	current lexemes being read. This will produce an error if the
+	current lexemes does not match with the top of the stack terminal.
+*/
 void SyntaxAnalyzer::handleTerminal() {
 	if (syntaxStack.top() == "i") {
 		if (tokens[index] == "identifier") {
@@ -187,25 +251,37 @@ void SyntaxAnalyzer::handleTerminal() {
 	}
 }
 
-void SyntaxAnalyzer::ruleOne()
+/*
+	Rule One Triggered Method
+	Production rule one has been triggered.
+	This will push J then T onto the stack
+*/
+void SyntaxAnalyzer::ruleOneTriggered()
 {
-	cout << "ruleONE\n";
-	// pushes J then T
+	// cout << "ruleONE\n";
 	syntaxStack.push("J");
 	syntaxStack.push("T");
 }
 
-void SyntaxAnalyzer::ruleTwo()
+/*
+	Rule Two Triggered Method
+	Product rule two has been triggered.
+	This will push J, T, then + onto the stack
+*/
+void SyntaxAnalyzer::ruleTwoTriggered()
 {
 	cout << "ruleTwo\n";
-	// push J, T, +
-	// check if the top of stack terminal and compares with lexeme index
 	syntaxStack.push("J");
 	syntaxStack.push("T");
 	syntaxStack.push("+");
 }
 
-void SyntaxAnalyzer::ruleThree()
+/*
+	Rule Three Triggered Method
+	Production rule three has been triggered.
+	This will push J, T, then - onto the stack
+*/
+void SyntaxAnalyzer::ruleThreeTriggered()
 {
 	cout << "ruleThree\n";
 	// push J, T, -
@@ -215,59 +291,85 @@ void SyntaxAnalyzer::ruleThree()
 	syntaxStack.push("-");
 }
 
-void SyntaxAnalyzer::ruleFour()
+/*
+	Rule Four Triggered Method
+	Production rule four has been triggered.
+	This will push U then F onto the stack
+*/
+void SyntaxAnalyzer::ruleFourTriggered()
 {
 	cout << "ruleFour\n";
-	// push U, F
 	syntaxStack.push("U");
 	syntaxStack.push("F");
 }
 
-void SyntaxAnalyzer::ruleFive()
+/*
+	Rule Five Triggered Method
+	Production rule five has been triggered.
+	This will push U, F, then * onto the stack
+*/
+void SyntaxAnalyzer::ruleFiveTriggered()
 {
 	cout << "ruleFive\n";
-	// push U, F, *
-	// check if the top of stack terminal and compares with lexeme index
 	syntaxStack.push("U");
 	syntaxStack.push("F");
 	syntaxStack.push("*");
 }
 
-void SyntaxAnalyzer::ruleSix()
+/*
+	Rule Six Triggered Method
+	Production rule six has been triggered.
+	This will push U, F, then / onto the stack
+*/
+void SyntaxAnalyzer::ruleSixTriggered()
 {
 	cout << "ruleSix\n";
-	// push U, F, /
-	// check if the top of stack terminal and compares with lexeme index
 	syntaxStack.push("U");
 	syntaxStack.push("F");
 	syntaxStack.push("/");
 }
 
-void SyntaxAnalyzer::ruleSeven()
+/*
+	Rule Seven Triggered Method
+	Production rule seven has been triggered.
+	This will push ), E, then ( onto the stack.
+*/
+void SyntaxAnalyzer::ruleSevenTriggered()
 {
 	cout << "ruleSeven\n";
-	// push ), E, (
-	// check if the top of stack terminal and compares with lexeme index
 	syntaxStack.push(")");
 	syntaxStack.push("E");
 	syntaxStack.push("(");
 }
 
-void SyntaxAnalyzer::ruleEight()
+/*
+	Rule Eight Triggered Method
+	Production rule eight has been triggered.
+	This will push i onto the stack
+*/
+void SyntaxAnalyzer::ruleEightTriggered()
 {
 	cout << "ruleEight\n";
-	// push i
-	// check if the top of stack terminal and compares with lexeme index
 	syntaxStack.push("i");
 }
 
-void SyntaxAnalyzer::ruleZero()
+/*
+	Rule Zero Triggered Method
+	Production rule zero has been triggered.
+	This means that there is no error so just continute.
+*/
+void SyntaxAnalyzer::ruleZeroTriggered()
 {
 	cout << "ruleZero\n";
-	// push nothing; continue
 }
 
-void SyntaxAnalyzer::ruleError()
+/*
+	Rule Error Triggered Method
+	An error had occured in the process.
+	This means that the lexemes and tokens are not
+	syntactically correct.
+*/
+void SyntaxAnalyzer::ruleErrorTriggered()
 {
 	cout << "ruleError\n";
 	// ERROR HAS OCCURED
