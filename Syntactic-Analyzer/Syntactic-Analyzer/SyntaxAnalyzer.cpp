@@ -31,19 +31,21 @@ SyntaxAnalyzer::SyntaxAnalyzer() {
 	row or column in order use the 2D array rules
 */
 void SyntaxAnalyzer::makeConversions() {
-	conversionNonTerminals.insert(pair<string, int>("E", 0));
-	conversionNonTerminals.insert(pair<string, int>("J", 1));
-	conversionNonTerminals.insert(pair<string, int>("T", 2));
-	conversionNonTerminals.insert(pair<string, int>("U", 3));
-	conversionNonTerminals.insert(pair<string, int>("F", 4));
+	conversionNonTerminals.insert(pair<string, int>("S", 0));
+	conversionNonTerminals.insert(pair<string, int>("E", 1));
+	conversionNonTerminals.insert(pair<string, int>("Q", 2));
+	conversionNonTerminals.insert(pair<string, int>("T", 3));
+	conversionNonTerminals.insert(pair<string, int>("R", 4));
+	conversionNonTerminals.insert(pair<string, int>("F", 5));
 	conversionTerminals.insert(pair<string, int>("i", 0));
 	conversionTerminals.insert(pair<string, int>("+", 1));
 	conversionTerminals.insert(pair<string, int>("-", 2));
-	conversionTerminals.insert(pair<string, int>("/", 3));
-	conversionTerminals.insert(pair<string, int>("*", 4));
+	conversionTerminals.insert(pair<string, int>("*", 3));
+	conversionTerminals.insert(pair<string, int>("/", 4));
 	conversionTerminals.insert(pair<string, int>("(", 5));
 	conversionTerminals.insert(pair<string, int>(")", 6));
 	conversionTerminals.insert(pair<string, int>("$", 7));
+	conversionTerminals.insert(pair<string, int>("=", 8));
 }
 
 /*
@@ -116,7 +118,7 @@ void SyntaxAnalyzer::lexer() {
 	with the given production rules.
 */
 void SyntaxAnalyzer::analyzeSyntax() {
-	if (lexemes.size() < 0 || tokens.size() < 0) {
+	if (lexemes.size() < 1 || tokens.size() < 1) {
 		cout << "ERROR: NO FILE WAS FOUND TO ANALYZE SYNTAX\n";
 		return;
 	}
@@ -126,17 +128,17 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	syntaxStack.push("$");
 
 	// adding first state in stack
-	syntaxStack.push("E");
+	syntaxStack.push("S");
 
 	do {
-		cout << "top stack: " << syntaxStack.top() << endl;
+		cout << "\ntop stack: " << syntaxStack.top() << endl;
 		// check if the top of the stack is a terminal, if so check if lexeme matches
 		if (isTerminal(syntaxStack.top())) {
 			// check if it is an identifier
 			handleTerminal();
 		}
 		else if (isNonterminal(syntaxStack.top())) {
-			cout << "nonterminal: " << syntaxStack.top() << " row: " << conversionNonTerminals[syntaxStack.top()] << endl;
+			cout << "nonterminal: " << syntaxStack.top() << "\trow: " << conversionNonTerminals[syntaxStack.top()] << endl;
 			int currentRow = conversionNonTerminals[syntaxStack.top()];
 			int currentColumn;
 
@@ -152,7 +154,7 @@ void SyntaxAnalyzer::analyzeSyntax() {
 
 			syntaxStack.pop();
 			int state = rules[currentRow][currentColumn];
-			cout << "state: " << state << endl;
+			cout << "state:\t " << state << endl;
 
 			switch (state) {
 			case -1:
@@ -185,16 +187,20 @@ void SyntaxAnalyzer::analyzeSyntax() {
 			case 8:
 				ruleEightTriggered();
 				break;
+			case 9:
+				ruleNineTriggered();
+				break;
 			default:
-				cout << "ERROR, UNREACHABLE AREA\n";
+				printf("ERROR on %d \n", __LINE__);
+				printf("Prease enter to exit program\n");
+				cin.get();
+				exit(0);
 			}
 		}
 		else {
-			cout << "ERROR HAS OCCURED (80)\n";
+			cerr << "ERROR HAS OCCURED (80)\n";
 		}
 	} while (syntaxStack.top() != "$" || lexemes[index] != "$");
-	cout << "stack: " << syntaxStack.top() << endl;
-	cout << "last lexeme: " << lexemes[index] << endl;
 	cout << "SYNTAX IS CORRECT!\n";
 }
 
@@ -215,9 +221,7 @@ bool SyntaxAnalyzer::isTerminal(string value) {
 */
 bool SyntaxAnalyzer::isNonterminal(string value) {
 	for (int i = 0; i < nonterminals.size(); i++) {
-		// cout << value << " equals to " << nonterminals[i] << "?";
 		if (nonterminals[i] == value) {
-			// cout << " true \n";
 			return true;
 		}
 	}
@@ -237,7 +241,10 @@ void SyntaxAnalyzer::handleTerminal() {
 			syntaxStack.pop();
 		}
 		else {
-			cout << "ERORR (146)\n";
+			printf("ERROR on %d \n", __LINE__);
+			printf("Prease enter to exit program\n");
+			cin.get();
+			exit(0);
 		}
 	}
 	else {
@@ -246,7 +253,10 @@ void SyntaxAnalyzer::handleTerminal() {
 			syntaxStack.pop();
 		}
 		else {
-			cout << "ERROR (155)\n";
+			printf("ERROR on %d \n", __LINE__);
+			printf("Prease enter to exit program\n");
+			cin.get();
+			exit(0);
 		}	
 	}
 }
@@ -254,102 +264,104 @@ void SyntaxAnalyzer::handleTerminal() {
 /*
 	Rule One Triggered Method
 	Production rule one has been triggered.
-	This will push J then T onto the stack
+	This will push i, = , then E to the stack
 */
 void SyntaxAnalyzer::ruleOneTriggered()
 {
 	// cout << "ruleONE\n";
-	syntaxStack.push("J");
-	syntaxStack.push("T");
+	syntaxStack.push("E");
+	syntaxStack.push("=");
+	syntaxStack.push("i");
 }
 
 /*
 	Rule Two Triggered Method
 	Product rule two has been triggered.
-	This will push J, T, then + onto the stack
+	This will push T then Q
 */
 void SyntaxAnalyzer::ruleTwoTriggered()
 {
 	cout << "ruleTwo\n";
-	syntaxStack.push("J");
+	syntaxStack.push("Q");
 	syntaxStack.push("T");
-	syntaxStack.push("+");
 }
 
 /*
 	Rule Three Triggered Method
 	Production rule three has been triggered.
-	This will push J, T, then - onto the stack
 */
 void SyntaxAnalyzer::ruleThreeTriggered()
 {
 	cout << "ruleThree\n";
-	// push J, T, -
-	// check if the top of stack terminal and compares with lexeme index
-	syntaxStack.push("J");
+	syntaxStack.push("Q");
 	syntaxStack.push("T");
-	syntaxStack.push("-");
+	syntaxStack.push("+");
 }
 
 /*
 	Rule Four Triggered Method
 	Production rule four has been triggered.
-	This will push U then F onto the stack
 */
 void SyntaxAnalyzer::ruleFourTriggered()
 {
 	cout << "ruleFour\n";
-	syntaxStack.push("U");
-	syntaxStack.push("F");
+	syntaxStack.push("Q");
+	syntaxStack.push("T");
+	syntaxStack.push("-");
 }
 
 /*
 	Rule Five Triggered Method
 	Production rule five has been triggered.
-	This will push U, F, then * onto the stack
 */
 void SyntaxAnalyzer::ruleFiveTriggered()
 {
 	cout << "ruleFive\n";
-	syntaxStack.push("U");
+	syntaxStack.push("R");
 	syntaxStack.push("F");
-	syntaxStack.push("*");
 }
 
 /*
 	Rule Six Triggered Method
 	Production rule six has been triggered.
-	This will push U, F, then / onto the stack
 */
 void SyntaxAnalyzer::ruleSixTriggered()
 {
 	cout << "ruleSix\n";
-	syntaxStack.push("U");
+	syntaxStack.push("R");
 	syntaxStack.push("F");
-	syntaxStack.push("/");
+	syntaxStack.push("*");
 }
 
 /*
 	Rule Seven Triggered Method
 	Production rule seven has been triggered.
-	This will push ), E, then ( onto the stack.
 */
 void SyntaxAnalyzer::ruleSevenTriggered()
 {
 	cout << "ruleSeven\n";
+	syntaxStack.push("R");
+	syntaxStack.push("F");
+	syntaxStack.push("/");
+}
+
+/*
+	Rule Eight Triggered Method
+	Production rule eight has been triggered.
+*/
+void SyntaxAnalyzer::ruleEightTriggered()
+{
+	cout << "ruleEight\n";
 	syntaxStack.push(")");
 	syntaxStack.push("E");
 	syntaxStack.push("(");
 }
 
 /*
-	Rule Eight Triggered Method
-	Production rule eight has been triggered.
-	This will push i onto the stack
+	Rule Nine Triggered Method
 */
-void SyntaxAnalyzer::ruleEightTriggered()
+void SyntaxAnalyzer::ruleNineTriggered()
 {
-	cout << "ruleEight\n";
 	syntaxStack.push("i");
 }
 
@@ -372,5 +384,4 @@ void SyntaxAnalyzer::ruleZeroTriggered()
 void SyntaxAnalyzer::ruleErrorTriggered()
 {
 	cout << "ruleError\n";
-	// ERROR HAS OCCURED
 }

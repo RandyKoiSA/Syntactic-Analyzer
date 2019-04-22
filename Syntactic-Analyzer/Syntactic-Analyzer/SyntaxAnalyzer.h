@@ -33,14 +33,16 @@ private:
 	bool isTerminal(string);
 	bool isNonterminal(string);
 	void handleTerminal();
-	void ruleOneTriggered();   // TJ
-	void ruleTwoTriggered();   // +TJ
-	void ruleThreeTriggered(); // -TJ
-	void ruleFourTriggered();  // FU
-	void ruleFiveTriggered();  // *FU
-	void ruleSixTriggered();   // /FU
-	void ruleSevenTriggered(); // (E)
-	void ruleEightTriggered(); // i
+
+	void ruleOneTriggered();   // i = E
+	void ruleTwoTriggered();   // TQ
+	void ruleThreeTriggered(); // +TQ
+	void ruleFourTriggered();  // -TQ
+	void ruleFiveTriggered();  // FR
+	void ruleSixTriggered();   // *FR
+	void ruleSevenTriggered(); // /FR
+	void ruleEightTriggered(); // (E)
+	void ruleNineTriggered();  // i
 	void ruleZeroTriggered();  // EPSILON
 	void ruleErrorTriggered(); // ERROR
 
@@ -54,15 +56,16 @@ private:
 	map<string, int> conversionTerminals;
 	map<string, int> conversionNonTerminals;
 
-	vector<string> terminals= { "i", "+", "-", "/", "*", "(", ")", "$" };
-	vector<string> nonterminals = { "E", "J", "T", "U", "F" };
+	vector<string> terminals= { "i", "+", "-", "/", "*", "(", ")", "$", "="};
+	vector<string> nonterminals = { "S", "E", "Q", "T", "R", "F" };
 
-	int rules[5][8] = {
-		 1, -1, -1, -1, -1,  1, 0, 0,
-		-1,  2,  3, -1, -1, -1, 0, 0,
-		 4,  0,  0, -1, -1,  4, 0, 0,
-		-1,  0,  0,  6,  5, -1, 0, 0,
-		 8,  0,  0,  0,  0,  7, 0, 0
+	int rules[6][9] = {
+		 1, -1, -1, -1, -1, -1, -1, -1, -1,
+		 2, -1, -1, -1, -1,  2, -1, -1, -1,
+		-1,  3,  4, -1, -1, -1,  0,  0, -1,
+		 5, -1, -1, -1, -1,  5,  0,  0, -1,
+		-1,  0,  0,  6,  7, -1,  0,  0, -1,
+		 9, -1, -1, -1, -1,  8, -1, -1, -1
 	};
 	int index;	// index will keep track of where you are in the lexemes/tokens
 };

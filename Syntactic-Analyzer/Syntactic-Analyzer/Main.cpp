@@ -29,6 +29,10 @@ int main(int argc, char* arg[]) {
 			SyntaxAnalyzer sa;
 			sa.loadLexemes(la.getLexemes());
 			sa.loadTokens(la.getTokens());
+
+			sa.printLexemes();
+			sa.printTokens();
+
 			sa.analyzeSyntax();
 		}
 	}
