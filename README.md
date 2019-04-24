@@ -24,5 +24,8 @@ SyntaxAnalyzer.cpp
 SyntaxAnalyzer.h
 ```
 
+## Bugs
+When testing a text file example `a = b + c` please include a space or a new line at the end of the file.
+
 ## License
 This project is license under the MIT License - see the [LICENSE.md](https://github.com/RandyKoiSA/Syntactic-Analyzer/blob/master/LICENSE) for more details.

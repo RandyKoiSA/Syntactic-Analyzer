@@ -1,6 +1,6 @@
 ﻿  SyntaxAnalyzer.cpp
-c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(76): warning C4018: '<': signed/unsigned mismatch
-c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(88): warning C4018: '<': signed/unsigned mismatch
-c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(211): warning C4018: '<': signed/unsigned mismatch
-c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(222): warning C4018: '<': signed/unsigned mismatch
+c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(68): warning C4018: '<': signed/unsigned mismatch
+c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(80): warning C4018: '<': signed/unsigned mismatch
+c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(192): warning C4018: '<': signed/unsigned mismatch
+c:\users\97ran\desktop\syntactic-analyzer\syntactic-analyzer\syntactic-analyzer\syntaxanalyzer.cpp(203): warning C4018: '<': signed/unsigned mismatch
   Syntactic-Analyzer.vcxproj -> C:\Users\97ran\Desktop\Syntactic-Analyzer\Syntactic-Analyzer\Debug\Syntactic-Analyzer.exe

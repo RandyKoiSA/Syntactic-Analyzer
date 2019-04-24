@@ -14,6 +14,11 @@
 
 using namespace std;
 
+enum productionRule {
+	ruleNeg, ruleZero, ruleOne, ruleTwo, ruleThree, ruleFour,
+	ruleFive, ruleSix, ruleSeven, ruleEight, ruleNine
+};
+
 class SyntaxAnalyzer {
 public:
 	SyntaxAnalyzer();
@@ -27,7 +32,6 @@ public:
 	// testable methods
 	void printLexemes();
 	void printTokens();
-	void printStack();
 private:
 	void makeConversions();
 	bool isTerminal(string);
@@ -59,13 +63,13 @@ private:
 	vector<string> terminals= { "i", "+", "-", "/", "*", "(", ")", "$", "="};
 	vector<string> nonterminals = { "S", "E", "Q", "T", "R", "F" };
 
-	int rules[6][9] = {
-		 1, -1, -1, -1, -1, -1, -1, -1, -1,
-		 2, -1, -1, -1, -1,  2, -1, -1, -1,
-		-1,  3,  4, -1, -1, -1,  0,  0, -1,
-		 5, -1, -1, -1, -1,  5,  0,  0, -1,
-		-1,  0,  0,  6,  7, -1,  0,  0, -1,
-		 9, -1, -1, -1, -1,  8, -1, -1, -1
+	productionRule rules[6][9] = {
+		  ruleOne,   ruleNeg,  ruleNeg, ruleNeg, ruleNeg,   ruleNeg,  ruleNeg,  ruleNeg, ruleNeg,
+		  ruleTwo,   ruleNeg,  ruleNeg, ruleNeg, ruleNeg,   ruleTwo,  ruleNeg,  ruleNeg, ruleNeg,
+		  ruleNeg, ruleThree, ruleFour, ruleNeg, ruleNeg,   ruleNeg, ruleZero, ruleZero, ruleNeg,
+		 ruleFive,   ruleNeg,  ruleNeg, ruleNeg, ruleNeg,  ruleFive, ruleZero, ruleZero, ruleNeg,
+		  ruleNeg,  ruleZero, ruleZero, ruleSix, ruleSeven, ruleNeg, ruleZero, ruleZero, ruleNeg,
+		 ruleNine,   ruleNeg,  ruleNeg, ruleNeg, ruleNeg, ruleEight,  ruleNeg,  ruleNeg, ruleNeg
 	};
 	int index;	// index will keep track of where you are in the lexemes/tokens
 };
