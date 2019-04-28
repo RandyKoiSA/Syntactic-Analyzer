@@ -110,21 +110,21 @@ void SyntaxAnalyzer::analyzeSyntax() {
 	syntaxStack.push("S");
 
 	do {
-		printf("\ntop stack: %s\n", syntaxStack.top().c_str());
+		// printf("\ntop stack: %s\n", syntaxStack.top().c_str());
 		// check if the top of the stack is a terminal, if so check if lexeme matches
 		if (isTerminal(syntaxStack.top())) {
 			// check if it is an identifier
 			handleTerminal();
 		}
 		else if (isNonterminal(syntaxStack.top())) {
-			cout << "nonterminal: " << syntaxStack.top() << "\trow: " << conversionNonTerminals[syntaxStack.top()] << endl;
+			cout << "TOP STACK: " << syntaxStack.top() << "\trow: " << conversionNonTerminals[syntaxStack.top()] << endl;
 			int currentRow = conversionNonTerminals[syntaxStack.top()];
 			int currentColumn;
 
 			// check the types of tokens before processing into the column
 			if (tokens[index] == "identifier") {
 				currentColumn = conversionTerminals["i"];
-				cout << "terminal: " << lexemes[index] << " \tcolumn: " << currentColumn << endl;
+				cout << "CURRENT LEXEME BEING READ: " << lexemes[index] << " \tcolumn: " << currentColumn << endl;
 			}
 			else {
 				currentColumn = conversionTerminals[lexemes[index]];
@@ -133,7 +133,6 @@ void SyntaxAnalyzer::analyzeSyntax() {
 			syntaxStack.pop();
 
 			productionRule state = rules[currentRow][currentColumn];
-			cout << "state:\t " << state << endl;
 
 			switch (state) {
 			case ruleNeg:
@@ -179,6 +178,7 @@ void SyntaxAnalyzer::analyzeSyntax() {
 		else {
 			cerr << "ERROR HAS OCCURED (80)\n";
 		}
+		printf("================================================\n\n");
 	} while (syntaxStack.top() != "$" || lexemes[index] != "$");
 	printf("\nSytax is correct!\n");
 }
@@ -215,6 +215,8 @@ bool SyntaxAnalyzer::isNonterminal(string value) {
 	current lexemes does not match with the top of the stack terminal.
 */
 void SyntaxAnalyzer::handleTerminal() {
+	printf("TOP OF STACK: %s \n", syntaxStack.top().c_str());
+	printf("TOKEN: %s\t\t LEXEME: %s\n", tokens[index].c_str(), lexemes[index].c_str());
 	if (syntaxStack.top() == "i") {
 		if (tokens[index] == "identifier") {
 			printf("identifier found: %s\n", lexemes[index].c_str());
